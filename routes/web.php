@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AutorController;
+use App\Http\Controllers\LivroController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,4 +23,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+
+
+Route::resource('autores', [AutorController::class]);
+
+Route::resource('livros', [LivroController::class]);

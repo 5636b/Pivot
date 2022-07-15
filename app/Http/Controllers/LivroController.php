@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Livro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LivroController extends Controller
 {
@@ -13,7 +15,8 @@ class LivroController extends Controller
      */
     public function index()
     {
-        //
+        $livro = Livro::get();
+        return view('livros.index', ['livro' => $livro]);
     }
 
     /**
@@ -23,7 +26,7 @@ class LivroController extends Controller
      */
     public function create()
     {
-        //
+        return view('livros.create');
     }
 
     /**
@@ -34,7 +37,19 @@ class LivroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'autor' => 'required',
+            'titulo' => 'required',
+            'genero' => 'required',
+            'edicao' => 'required',
+            'editora' => 'required',
+            'numero_de_paginas' => 'required',
+            'user_id' => 'required'
+        ]);
+
+        Livro::create($request->all());
+
+        return redirect()->route('livros.index');
     }
 
     /**
@@ -45,7 +60,9 @@ class LivroController extends Controller
      */
     public function show($id)
     {
-        //
+        $livro = Livro::find($id);
+
+        return view('livro.show', compact('livro'));
     }
 
     /**
@@ -56,7 +73,9 @@ class LivroController extends Controller
      */
     public function edit($id)
     {
-        //
+        $livro = Livro::find($id);
+
+        return view('livro.edit', compact('livro'));
     }
 
     /**
@@ -68,7 +87,21 @@ class LivroController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $livro = Livro::find($id);
+
+        $data = $request->only(
+            'autor',
+            'titulo',
+            'genero',
+            'edicao',
+            'editora',
+            'numero_de_paginas',
+            'user_id'
+        );
+
+        $livro->update($data);
+
+        return redirect()->route('livros.index');
     }
 
     /**
@@ -79,6 +112,10 @@ class LivroController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $livro = Livro::find($id);
+
+        $livro->delete();
+
+        return redirect()->route('livros.index');
     }
 }

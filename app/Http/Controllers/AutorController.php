@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Autor;
 use Illuminate\Http\Request;
 
 class AutorController extends Controller
@@ -13,7 +14,8 @@ class AutorController extends Controller
      */
     public function index()
     {
-        //
+        $autor = Autor::get();
+        return view('autores.index', ['autor' => $autor]);
     }
 
     /**
@@ -23,7 +25,7 @@ class AutorController extends Controller
      */
     public function create()
     {
-        //
+        return view('autores.create');
     }
 
     /**
@@ -34,7 +36,16 @@ class AutorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nome' => 'required',
+            'genero' => 'required',
+            'livros_publicados' => 'required',
+            'mais_vendidos' => 'required'
+        ]);
+
+        Autor::create($request->all());
+
+        return redirect()->route('autores.index');
     }
 
     /**
@@ -45,7 +56,9 @@ class AutorController extends Controller
      */
     public function show($id)
     {
-        //
+        $autor = Autor::find($id);
+
+        return view('autores.show', compact('autor'));
     }
 
     /**
@@ -56,7 +69,9 @@ class AutorController extends Controller
      */
     public function edit($id)
     {
-        //
+        $autor = Autor::find($id);
+
+        return view('autores.edit', compact('autor'));
     }
 
     /**
@@ -68,7 +83,13 @@ class AutorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $autor = Autor::find($id);
+
+        $data = $request->only('nome', 'genero', 'livros_publicados', 'mais_vendidos');
+
+        $autor->update($data);
+
+        return redirect()->route('autor.index');
     }
 
     /**
@@ -79,6 +100,10 @@ class AutorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $autor = Autor::find($id);
+
+        $autor->delete();
+
+        return redirect()->route('autores.index');
     }
 }
