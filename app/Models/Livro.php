@@ -21,7 +21,7 @@ class Livro extends Model
 
     public function dono()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function autores()

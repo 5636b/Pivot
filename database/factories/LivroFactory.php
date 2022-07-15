@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +24,7 @@ class LivroFactory extends Factory
             'edicao' => $this->faker->numberBetween($int1 = 1, $int2 = 15),
             'editora' => $this->faker->sentence(),
             'numero_de_paginas' => $this->faker->randomNumber(),
-            'user_id' => $this->faker->randomNumber()
+            'user_id' => User::all()->random()->id
         ];
     }
 }
